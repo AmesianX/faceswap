@@ -183,14 +183,8 @@ class Aligner(Extractor):
 
         """
 
-        generator = zip(batch["detected_faces"],
-                        batch["filename"],
-                        batch["image"],
-                        batch["landmarks"])
-        for face, filename, image, landmarks in generator:
+        for face, landmarks in zip(batch["detected_faces"], batch["landmarks"]):
             face.landmarks_xy = [(int(round(pt[0])), int(round(pt[1]))) for pt in landmarks]
-            face.image = image
-            face.filename = filename
         self._remove_invalid_keys(batch, ("detected_faces", "filename", "image"))
         logger.trace("Item out: %s", {key: val
                                       for key, val in batch.items()
@@ -243,13 +237,13 @@ class Aligner(Extractor):
     def _normalize_hist(face):
         """ Equalize the RGB histogram channels """
         for chan in range(3):
-            face[:, :, chan] = cv2.equalizeHist(face[:, :, chan])  # pylint: disable=no-member
+            face[:, :, chan] = cv2.equalizeHist(face[:, :, chan])
         return face
 
     @staticmethod
     def _normalize_clahe(face):
         """ Perform Contrast Limited Adaptive Histogram Equalization """
-        clahe = cv2.createCLAHE(clipLimit=2.0,  # pylint: disable=no-member
+        clahe = cv2.createCLAHE(clipLimit=2.0,
                                 tileGridSize=(4, 4))
         for chan in range(3):
             face[:, :, chan] = clahe.apply(face[:, :, chan])

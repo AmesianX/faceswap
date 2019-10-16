@@ -255,6 +255,7 @@ class DiskIO():
                        "superior results")
         extractor = Extractor(detector="cv2-dnn",
                               aligner="cv2-dnn",
+                              masker="none",
                               multiprocess=False,
                               rotate_images=None,
                               min_size=20)

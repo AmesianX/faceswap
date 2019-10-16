@@ -322,7 +322,7 @@ class Extractor():
         """
         logger.debug("initialize %s: (args: %s, kwargs: %s)",
                      self.__class__.__name__, args, kwargs)
-        logger.info("Initializing %s in %s phase...", self.name, self._plugin_type)
+        logger.info("Initializing %s (%s)...", self.name, self._plugin_type)
         self.queue_size = 1
         self._add_queues(kwargs["in_queue"], kwargs["out_queue"], ["predict", "post"])
         self._compile_threads()
@@ -445,7 +445,7 @@ class Extractor():
         if self.colorformat == "RGB":
             cvt_image = image[:, :, ::-1].copy()
         elif self.colorformat == "GRAY":
-            cvt_image = cv2.cvtColor(image.copy(), cv2.COLOR_BGR2GRAY)  # pylint:disable=no-member
+            cvt_image = cv2.cvtColor(image.copy(), cv2.COLOR_BGR2GRAY)
         else:
             cvt_image = image.copy()
         return cvt_image
